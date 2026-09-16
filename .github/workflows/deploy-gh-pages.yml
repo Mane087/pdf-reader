@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -10,10 +12,11 @@ permissions:
   pages: write
   id-token: write
 
-# Queue deployments instead of cancelling one that is already publishing.
+# One run per ref. A pull request cancels its own outdated runs; a deployment
+# already publishing is never cancelled.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   # Angular writes the browser bundle here; the project name comes from angular.json.
@@ -53,16 +56,21 @@ jobs:
         # file that does not exist. Serving index.html as 404.html lets the router resolve it.
         run: cp "$DIST_DIR/index.html" "$DIST_DIR/404.html"
 
+      # On a pull request the job stops here: it proves the branch builds, without
+      # publishing anything. Only a push to main uploads and deploys.
       - name: Configure Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.DIST_DIR }}
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
     environment:
