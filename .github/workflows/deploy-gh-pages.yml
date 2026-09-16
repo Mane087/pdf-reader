@@ -1,0 +1,75 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Queue deployments instead of cancelling one that is already publishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # Angular writes the browser bundle here; the project name comes from angular.json.
+  DIST_DIR: dist/pdf-reader/browser
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Unit tests
+        run: pnpm run test:ci
+
+      - name: Build
+        run: pnpm run build:gh
+
+      - name: Add SPA fallback
+        # GitHub Pages has no rewrite rules: a reload on /reader/:documentId asks for a
+        # file that does not exist. Serving index.html as 404.html lets the router resolve it.
+        run: cp "$DIST_DIR/index.html" "$DIST_DIR/404.html"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.DIST_DIR }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

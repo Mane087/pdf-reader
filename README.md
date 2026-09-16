@@ -6,6 +6,9 @@
 
 <!-- BADGES -->
 <p align="center">
+    <a title="Deploy to GitHub Pages" href="https://github.com/Mane087/pdf-reader/actions/workflows/deploy-gh-pages.yml">
+       <img src="https://github.com/Mane087/pdf-reader/actions/workflows/deploy-gh-pages.yml/badge.svg" alt="Deploy to GitHub Pages" />
+    </a>
     <a title="Apache-2.0" href="LICENSE.md">
        <img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="Apache-2.0" />
     </a>

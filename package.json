@@ -1,6 +1,7 @@
 {
   "name": "pdf-reader",
   "version": "0.0.0",
+  "packageManager": "pnpm@11.25.0",
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --max-warnings=0"
@@ -13,6 +14,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:gh": "ng build --base-href /pdf-reader/",
     "watch": "ng build --watch --configuration development",
     "test": "jest",
     "test:watch": "jest --watch",
