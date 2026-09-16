@@ -1,2 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
 @import 'tailwindcss';
+
+/*
+ * PDF.js viewer integration. pdf_viewer.css is loaded before this file
+ * (see angular.json). The container must be absolutely positioned because
+ * PDFViewer throws otherwise.
+ */
+html,
+body {
+  height: 100%;
+}
+
+@layer base {
+  /*
+   * Tailwind's preflight leaves interactive elements with the default arrow.
+   * Declaring it once covers every control, including the ones added later.
+   */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  summary {
+    cursor: pointer;
+  }
+}
+
+.pdf-viewer-container {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  outline: none;
+  @apply bg-slate-200;
+}

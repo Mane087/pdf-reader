@@ -1,5 +1,5 @@
 {
-  "name": "angular-template-project",
+  "name": "pdf-reader",
   "version": "0.0.0",
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -18,7 +18,10 @@
     "test:watch": "jest --watch",
     "test:ci": "jest --runInBand --coverage",
     "lint": "ng lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "e2e:fixtures": "node e2e/fixtures/generate-fixtures.mjs"
   },
   "private": true,
   "dependencies": {
@@ -31,11 +34,12 @@
     "@angular/platform-browser-dynamic": "^22.1.4",
     "@angular/router": "^22.1.4",
     "@tailwindcss/postcss": "^4.3.3",
+    "idb": "^8.0.3",
+    "pdfjs-dist": "6.3.289",
     "postcss": "^8.5.26",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.3.3",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^22.1.4",
@@ -52,17 +56,19 @@
     "@testing-library/user-event": "^14.6.6",
     "@types/jest": "^29.5.14",
     "@types/jsdom": "^30.0.0",
+    "@types/wicg-file-system-access": "^2023.10.7",
     "angular-eslint": "22.2.0",
     "eslint": "^10.9.0",
+    "fake-indexeddb": "^6.2.5",
     "husky": "^9.1.7",
-    "jasmine-core": "~5.5.0",
     "jest": "^30.5.1",
     "jest-environment-jsdom": "30.5.1",
-    "jest-preset-angular": "^14.6.2",
-    "jsdom": "^22.1.0",
+    "jest-preset-angular": "^17.0.0",
+    "jsdom": "^26.1.0",
     "lint-staged": "^17.4.1",
+    "pdf-lib": "^1.17.1",
     "prettier": "^3.9.6",
-    "typescript": "~5.9.3",
+    "typescript": "~6.0.3",
     "typescript-eslint": "8.67.0"
   }
 }
