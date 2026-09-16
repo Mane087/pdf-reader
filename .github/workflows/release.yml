@@ -23,7 +23,7 @@ jobs:
       # that bumps `version` in package.json and writes CHANGELOG.md. Merging that
       # pull request creates the vX.Y.Z tag and the GitHub Release with its notes.
       - name: Run release-please
-        uses: googleapis/release-please-action@v4
+        uses: googleapis/release-please-action@v5
         with:
           release-type: node
           token: ${{ secrets.GITHUB_TOKEN }}
