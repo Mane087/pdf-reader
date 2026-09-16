@@ -1,6 +1,13 @@
 @import 'tailwindcss';
 
 /*
+ * Dark mode is driven by a class on <html> instead of the system setting alone,
+ * because the toolbar toggle has to win over `prefers-color-scheme`.
+ * `ThemePreferencesStore` sets and clears that class.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
  * PDF.js viewer integration. pdf_viewer.css is loaded before this file
  * (see angular.json). The container must be absolutely positioned because
  * PDFViewer throws otherwise.
@@ -8,6 +15,29 @@
 html,
 body {
   height: 100%;
+}
+
+/*
+ * Painted before Angular bootstraps, so the first frame already matches the
+ * theme. The content security policy forbids inline scripts, so the system
+ * setting is the best guess available until the stored preference is read.
+ */
+html {
+  background-color: var(--color-slate-100);
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: var(--color-slate-950);
+  }
+}
+
+html:not(.dark) {
+  background-color: var(--color-slate-100);
+}
+
+html.dark {
+  background-color: var(--color-slate-950);
 }
 
 @layer base {
@@ -22,10 +52,18 @@ body {
   }
 }
 
+/*
+ * The icon files carry a fixed gray fill, which is too dark on a dark surface.
+ * Brightening them keeps a single asset per icon instead of a light and a dark copy.
+ */
+html.dark .icon-neutral {
+  filter: brightness(2);
+}
+
 .pdf-viewer-container {
   position: absolute;
   inset: 0;
   overflow: auto;
   outline: none;
-  @apply bg-slate-200;
+  @apply bg-slate-200 dark:bg-slate-950;
 }
