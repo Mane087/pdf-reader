@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Only one release run at a time, so two pushes cannot open competing release PRs.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # create the tag and the GitHub Release
+      pull-requests: write # open and update the release pull request
+
+    steps:
+      # Reads the Conventional Commits since the last tag and opens a pull request
+      # that bumps `version` in package.json and writes CHANGELOG.md. Merging that
+      # pull request creates the vX.Y.Z tag and the GitHub Release with its notes.
+      - name: Run release-please
+        uses: googleapis/release-please-action@v5
+        with:
+          release-type: node
+          token: ${{ secrets.GITHUB_TOKEN }}
