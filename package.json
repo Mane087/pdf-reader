@@ -1,6 +1,6 @@
 {
   "name": "pdf-reader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packageManager": "pnpm@11.25.0",
   "lint-staged": {
     "*.{ts,tsx}": [

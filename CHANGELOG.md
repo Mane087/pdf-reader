@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/Mane087/pdf-reader/compare/v1.0.0...v1.0.1) (2026-09-19)
+
+
+### Bug Fixes
+
+* desactiva el CSS crítico inline bloqueado por la CSP ([38f15ff](https://github.com/Mane087/pdf-reader/commit/38f15ffddb974bdf2350a1951a4d9d6913d18abb))
+* desactiva el CSS crítico inline bloqueado por la CSP ([0a7cdf4](https://github.com/Mane087/pdf-reader/commit/0a7cdf449d3f9384393651eb710c946e288d01b6))
+
 ## 1.0.0 (2026-09-17)
 
 
